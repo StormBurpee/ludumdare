@@ -54,7 +54,8 @@ export default class SidebarCalendar extends Component {
 	}
 
 	genRow( row ) {
-		return row.map( function(col) {
+		return row.map( function(col, index) {
+			col = col[index];
 			let props = {};
 			if ( col.selected ) {
 				props.class = "selected";
