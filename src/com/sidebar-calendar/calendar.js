@@ -54,33 +54,36 @@ export default class SidebarCalendar extends Component {
 	}
 
 	genRow( row ) {
-		return row.map( function(col) {
-			let props = {};
-			if ( col.selected ) {
-				props.class = "selected";
-			}
-			props.onclick = (e) => {
-				console.log('cal: ',col); 
-				window.location.hash = "#cal/"+col.year+"/"+col.month+"/"+col.day;
-			};
-			props.title = col.month+"-"+col.day+"-"+col.year;
-			if ( window.Intl ) {
-				// http://stackoverflow.com/a/18648314/5678759
-				let objDate = new Date(props.title);
-				props.title = objDate.toLocaleString("en-us", {month:"long", day:"numeric", year:"numeric"});
-			}
-			
-			var ShowIcon = null;
-			if ( col.year == 2016 && col.month == 12 && (col.day >= 9 && col.day <= 12) ) {
-				ShowIcon = <SVGIcon class="-icon">trophy</SVGIcon>;
-			}
+		return row.map( function(col, index) {
+			if(col !== undefined && col !== null) {
+				col = col[index];
+				let props = {};
+				if ( col.selected !== undefined && col.selected ) {
+					props.class = "selected";
+				}
+				props.onclick = (e) => {
+					console.log('cal: ',col); 
+					window.location.hash = "#cal/"+col.year+"/"+col.month+"/"+col.day;
+				};
+				props.title = col.month+"-"+col.day+"-"+col.year;
+				if ( window.Intl ) {
+					// http://stackoverflow.com/a/18648314/5678759
+					let objDate = new Date(props.title);
+					props.title = objDate.toLocaleString("en-us", {month:"long", day:"numeric", year:"numeric"});
+				}
 
-			return (
-				<div {...props}>
-					{ShowIcon}
-					<div class="-text">{col.day}</div>
-				</div>
-			); 
+				var ShowIcon = null;
+				if ( col.year == 2016 && col.month == 12 && (col.day >= 9 && col.day <= 12) ) {
+					ShowIcon = <SVGIcon class="-icon">trophy</SVGIcon>;
+				}
+
+				return (
+					<div {...props}>
+						{ShowIcon}
+						<div class="-text">{col.day}</div>
+					</div>
+				); 
+			}
 		});
 	}
 	
